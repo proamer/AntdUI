@@ -1,4 +1,4 @@
-﻿// COPYRIGHT (C) Tom. ALL RIGHTS RESERVED.
+// COPYRIGHT (C) Tom. ALL RIGHTS RESERVED.
 // THE AntdUI PROJECT IS AN WINFORM LIBRARY LICENSED UNDER THE Apache-2.0 License.
 // LICENSED UNDER THE Apache License, VERSION 2.0 (THE "License")
 // YOU MAY NOT USE THIS FILE EXCEPT IN COMPLIANCE WITH THE License.
@@ -26,10 +26,34 @@ namespace AntdUI
         {
             var datas = Properties.Resources.Custom.Split('|');
             Custom = new Dictionary<string, string>(datas.Length);
+            //foreach (string s in datas)
+            //{
+            //    var i = s.IndexOf(":");
+            //    Custom.Add(s.Substring(0, i), s.Substring(i + 1));
+            //}
             foreach (string s in datas)
             {
                 var i = s.IndexOf(":");
-                Custom.Add(s.Substring(0, i), s.Substring(i + 1));
+                var key = s.Substring(0, i);
+                var value = s.Substring(i + 1);
+
+                // ตรวจสอบว่ามี Key นี้อยู่แล้วหรือไม่
+                if (!Custom.ContainsKey(key))
+                {
+                    Custom.Add(key, value);
+                }
+                else
+                {
+                    // กรณีมี Key ซ้ำ สามารถเลือกทำอย่างใดอย่างหนึ่งต่อไปนี้:
+                    // 1. ข้ามไปเลย
+                    // continue;
+
+                    // 2. เขียนทับค่าเดิม
+                    Custom[key] = value;
+
+                    // 3. แจ้งเตือนเพื่อให้รู้ว่ามี Key ซ้ำ (สำหรับ Debug)
+                    // Console.WriteLine($"Duplicate key found: {key}");
+                }
             }
         }
         public static Dictionary<string, string> Custom;
